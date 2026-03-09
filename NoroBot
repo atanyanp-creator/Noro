@@ -1,0 +1,32 @@
+import telebot
+import time
+import os
+
+TOKEN = '8547913730:AAF46XBEkfhbMkF4cr1Copz6AFJ32nyw4U0'
+bot = telebot.TeleBot(TOKEN)
+PHOTO_PATH = 'photo.jpg'
+
+
+@bot.message_handler(commands=['start'])
+def start_spam(message):
+    chat_id = message.chat.id
+
+    if not os.path.exists(PHOTO_PATH):
+        bot.send_message(chat_id, "Фото не найдено")
+        return
+
+    bot.send_message(chat_id, "🚀 НАЧАЛО СПАМА")
+
+    with open(PHOTO_PATH, 'rb') as photo:
+        photo_data = photo.read()
+
+    while True:
+        try:
+            bot.send_photo(chat_id, photo_data)
+            time.sleep(0.001)  # 1 миллисекунда
+        except:
+            pass
+
+
+print("Бот запущен")
+bot.infinity_polling()
